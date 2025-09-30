@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --bg-primary: linear-gradient(to bottom right, #e0f2fe, #f3e8ff);
+      --sidebar-bg: linear-gradient(to bottom, #0ea5e9, #7c3aed);
+      --btn-primary: linear-gradient(to bottom right, #06b6d4, #8b5cf6);
+      --btn-active: linear-gradient(to bottom right, #67e8f9, #c4b5fd);
+      --text-primary: #1f2937;
+      --text-muted: #6b7280;
+      --border-color: #d1d5db;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+    }
+
+    #relaxSection {
+      text-align: center;
+      padding: 20px;
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: linear-gradient(to bottom right, #0f172a, #1e293b);
+      --sidebar-bg: linear-gradient(to bottom, #1e40af, #7c2d12);
+      --btn-primary: linear-gradient(to bottom right, #1d4ed8, #a855f7);
+      --btn-active: linear-gradient(to bottom right, #3b82f6, #c084fc);
+      --text-primary: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+      --shadow-color: rgba(0, 0, 0, 0.3);
+    }
+    #breathingCircle {
+  width: 150px;
+  height: 150px;
+  margin: 20px auto;
+  border-radius: 50%;
+  background: radial-gradient(circle, #38ef7d, #11998e);
+  animation: breathe 8s infinite;
+}
+@keyframes breathe {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.5); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+#breathingText {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+  animation: fadeText 8s infinite;
+}
+@keyframes fadeText {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+
+    .sidebar-bg {
+      background: var(--sidebar-bg);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      transition: background 0.3s ease;
+    }
+    .flex {
+      display: flex;
+    }
+    .h-screen {
+      height: 100vh;
+    }
+    .w-64 {
+      width: 16rem;
+    }
+    .text-white {
+      color: white;
+    }
+    .flex-col {
+      flex-direction: column;
+    }
+    .p-5 {
+      padding: 1.25rem;
+    }
+    .shadow-lg {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    .text-center {
+      text-align: center;
+    }
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+    .text-base {
+      font-size: 1rem;
+    }
+    .leading-relaxed {
+      line-height: 1.625;
+    }
+    .flex-1 {
+      flex: 1;
+    }
+    .gap-2 {
+      gap: 0.5rem;
+    }
+    .p-3 {
+      padding: 0.75rem;
+    }
+    .my-2 {
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .rounded-lg {
+      border-radius: 0.5rem;
+    }
+    .text-left {
+      text-align: left;
+    }
+    .transition-all {
+      transition: all 0.3s;
+    }
+    .duration-300 {
+      transition-duration: 0.3s;
+    }
+    .hover\:translate-x-1:hover {
+      transform: translateX(0.25rem);
+    }
+    .relative {
+      position: relative;
+    }
+    .overflow-hidden {
+      overflow: hidden;
+    }
+    .absolute {
+      position: absolute;
+    }
+    .inset-0 {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+    .bg-gradient-to-r {
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+    }
+    .-translate-x-full {
+      transform: translateX(-100%);
+    }
+    .hover\:translate-x-full:hover {
+      transform: translateX(100%);
+    }
+    .mt-auto {
+      margin-top: auto;
+    }
+    .box-border {
+      box-sizing: border-box;
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .text-2xl {
+      font-size: 1.5rem;
+    }
+    .font-semibold {
+      font-weight: 600;
+    }
+    .text-foreground {
+      color: var(--text-primary);
+    }
+    .justify-between {
+      justify-content: space-between;
+    }
+    .items-center {
+      align-items: center;
+    }
+    .text-sm {
+      font-size: 0.875rem;
+    }
+    .text-muted-foreground {
+      color: var(--text-muted);
+    }
+    .gap-5 {
+      gap: 1.25rem;
+    }
+    .mt-3 {
+      margin-top: 0.75rem;
+    }
+    .w-36 {
+      width: 9rem;
+    }
+    .h-36 {
+      height: 9rem;
+    }
+    .rounded-full {
+      border-radius: 9999px;
+    }
+    .bg-gradient-to-br {
+      background: linear-gradient(to bottom right, #c4b5fd, #86efac);
+    }
+    .justify-center {
+      justify-content: center;
+    }
+    .border-4 {
+      border-width: 4px;
+    }
+    .border-white\/80 {
+      border-color: rgba(255, 255, 255, 0.8);
+    }
+    .hover\:scale-105:hover {
+      transform: scale(1.05);
+    }
+    .object-cover {
+      object-fit: cover;
+    }
+    .block {
+      display: block;
+    }
+    .p-2\.5 {
+      padding: 0.625rem;
+    }
+    .mt-1 {
+      margin-top: 0.25rem;
+    }
+    .border {
+      border: 1px solid #d1d5db;
+    }
+    .border-border {
+      border-color: var(--border-color);
+    }
+    .focus\:outline-none:focus {
+      outline: none;
+    }
+    .focus\:ring-2:focus {
+      box-shadow: 0 0 0 2px #3b82f6;
+    }
+    .focus\:ring-primary:focus {
+      box-shadow: 0 0 0 2px #3b82f6;
+    }
+    .focus\:bg-blue-50:focus {
+      background-color: #eff6ff;
+    }
+    .px-6 {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    .py-2\.5 {
+      padding-top: 0.625rem;
+      padding-bottom: 0.625rem;
+    }
+    .shadow-md {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+    }
+    .shadow-green-400\/30 {
+      box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.3), 0 2px 4px -1px rgba(34, 197, 94, 0.3);
+    }
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+    .w-full {
+      width: 100%;
+    }
+    .border-none {
+      border: none;
+    }
+    .h-full {
+      height: 100%;
+    }
+    .text-foreground {
+      color: var(--text-primary);
+    }
+    .mb-3 {
+      margin-bottom: 0.75rem;
+    }
+    .strong {
+      font-weight: bold;
+    }
+    .p-2 {
+      padding: 0.5rem;
+    }
+    .mb-2 {
+      margin-bottom: 0.5rem;
+    }
+    .flex-1 {
+      flex: 1;
+    }
+    .max-h-96 {
+      max-height: 24rem;
+    }
+    .overflow-auto {
+      overflow: auto;
+    }
+    .pr-2 {
+      padding-right: 0.5rem;
+    }
+    .list-none {
+      list-style: none;
+    }
+    .p-0 {
+      padding: 0;
+    }
+    .m-0 {
+      margin: 0;
+    }
+    .my-2 {
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .no-underline {
+      text-decoration: none;
+    }
+    .hover\:-translate-y-0\.5:hover {
+      transform: translateY(-0.125rem);
+    }
+    .hover\:shadow-md:hover {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+    }
+    .ml-2 {
+      margin-left: 0.5rem;
+    }
+    .px-2\.5 {
+      padding-left: 0.625rem;
+      padding-right: 0.625rem;
+    }
+    .py-1 {
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+    }
+    .text-xs {
+      font-size: 0.75rem;
+    }
+    .bg-destructive {
+      background-color: #dc2626;
+    }
+    .text-destructive {
+      color: #dc2626;
+    }
+    .hover\:bg-destructive\/90:hover {
+      background-color: rgba(220, 38, 38, 0.9);
+    }
+    .h-\[calc\(100\%-44px\)\] {
+      height: calc(100% - 44px);
+    }
+    .w-80 {
+      width: 20rem;
+    }
+    .h-\[calc\(100\%-44px\)\] {
+      height: calc(100% - 44px);
+    }
+    .bg-background {
+      background-color: white;
+    }
+
+    [data-theme="dark"] .bg-background {
+      background-color: #1e293b;
+    }
+    .hidden {
+      display: none;
+    }
+    .bg-green-400 {
+      background-color: #4ade80;
+    }
+    .to-green-300 {
+      background: linear-gradient(to bottom right, #4ade80, #86efac);
+    }
+    .bg-cyan-400 {
+      background-color: #22d3ee;
+    }
+    .to-cyan-300 {
+      background: linear-gradient(to bottom right, #22d3ee, #67e8f9);
+    }
+    .bg-red-400 {
+      background-color: #f87171;
+    }
+    .to-red-300 {
+      background: linear-gradient(to bottom right, #f87171, #fca5a5);
+    }
+    .bg-purple-50 {
+      background-color: #faf5ff;
+    }
+    .to-blue-50 {
+      background: linear-gradient(to bottom right, #faf5ff, #eff6ff);
+    }
+    .bg-muted {
+      background-color: #f3f4f6;
+    }
+
+    [data-theme="dark"] .bg-muted {
+      background-color: #334155;
+    }
+    .bg-green-200 {
+      background-color: #bbf7d0;
+    }
+    .to-green-100 {
+      background: linear-gradient(to bottom right, #bbf7d0, #dcfce7);
+    }
+    .text-green-900 {
+      color: #14532d;
+    }
+    .shadow-green-200\/30 {
+      box-shadow: 0 4px 6px -1px rgba(187, 247, 208, 0.3), 0 2px 4px -1px rgba(187, 247, 208, 0.3);
+    }
+    .bg-green-300 {
+      background-color: #86efac;
+    }
+    .to-green-200 {
+      background: linear-gradient(to bottom right, #86efac, #bbf7d0);
+    }
+    .bg-cyan-200 {
+      background-color: #a5f3fc;
+    }
+    .to-cyan-100 {
+      background: linear-gradient(to bottom right, #a5f3fc, #cffafe);
+    }
+    .text-cyan-900 {
+      color: #164e63;
+    }
+    .shadow-cyan-200\/30 {
+      box-shadow: 0 4px 6px -1px rgba(165, 243, 252, 0.3), 0 2px 4px -1px rgba(165, 243, 252, 0.3);
+    }
+    .bg-cyan-300 {
+      background-color: #67e8f9;
+    }
+    .to-cyan-200 {
+      background: linear-gradient(to bottom right, #67e8f9, #a5f3fc);
+    }
+    .bg-red-200 {
+      background-color: #fecaca;
+    }
+    .to-red-100 {
+      background: linear-gradient(to bottom right, #fecaca, #fef2f2);
+    }
+    .text-red-900 {
+      color: #7f1d1d;
+    }
+    .shadow-red-200\/30 {
+      box-shadow: 0 4px 6px -1px rgba(254, 202, 202, 0.3), 0 2px 4px -1px rgba(254, 202, 202, 0.3);
+    }
+    .bg-purple-200 {
+      background-color: #e9d5ff;
+    }
+    .to-green-200 {
+      background: linear-gradient(to bottom right, #e9d5ff, #bbf7d0);
+    }
+    .bg-purple-300 {
+      background-color: #c4b5fd;
+    }
+    .to-purple-200 {
+      background: linear-gradient(to bottom right, #c4b5fd, #ddd6fe);
+    }
+    .bg-slate-800 {
+      background-color: #1e293b;
+    }
+    .to-slate-700 {
+      background: linear-gradient(to bottom, #1e293b, #334155);
+    }
+    .bg-slate-700 {
+      background-color: #334155;
+    }
+    .bg-blue-50 {
+      background-color: #eff6ff;
+    }
+    .to-teal-50 {
+      background: linear-gradient(to bottom right, #eff6ff, #f0fdfa);
+    }
+    .bg-white {
+      background-color: white;
+    }
+    .text-white {
+      color: white;
+    }
+    .font-medium {
+      font-weight: 500;
+    }
+    .font-semibold {
+      font-weight: 600;
+    }
+    .font-bold {
+      font-weight: 700;
+    }
+    .leading-relaxed {
+      line-height: 1.625;
+    }
+    .tracking-tight {
+      letter-spacing: -0.025em;
+    }
+    .transition-all {
+      transition: all 0.3s;
+    }
+    .transition-colors {
+      transition: color 0.3s;
+    }
+    .transition-transform {
+      transition: transform 0.3s;
+    }
+    .duration-300 {
+      transition-duration: 0.3s;
+    }
+    .duration-500 {
+      transition-duration: 0.5s;
+    }
+    .ease {
+      transition-timing-function: ease;
+    }
+    .hover\:scale-105:hover {
+      transform: scale(1.05);
+    }
+    .hover\:translate-x-1:hover {
+      transform: translateX(0.25rem);
+    }
+    .hover\:-translate-y-0\.5:hover {
+      transform: translateY(-0.125rem);
+    }
+    .hover\:shadow-md:hover {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+    }
+    .hover\:bg-destructive\/90:hover {
+      background-color: rgba(220, 38, 38, 0.9);
+    }
+    .hover\:translate-x-full:hover {
+      transform: translateX(100%);
+    }
+    .focus\:outline-none:focus {
+      outline: none;
+    }
+    .focus\:ring-2:focus {
+      box-shadow: 0 0 0 2px #3b82f6;
+    }
+    .focus\:bg-blue-50:focus {
+      background-color: #eff6ff;
+    }
+    .active\:bg-green-200:active {
+      background-color: #bbf7d0;
+    }
+    .active\:text-green-900:active {
+      color: #14532d;
+    }
+    .active\:shadow-green-200\/30:active {
+      box-shadow: 0 4px 6px -1px rgba(187, 247, 208, 0.3), 0 2px 4px -1px rgba(187, 247, 208, 0.3);
+    }
+    .active\:bg-cyan-200:active {
+      background-color: #a5f3fc;
+    }
+    .active\:text-cyan-900:active {
+      color: #164e63;
+    }
+    .active\:shadow-cyan-200\/30:active {
+      box-shadow: 0 4px 6px -1px rgba(165, 243, 252, 0.3), 0 2px 4px -1px rgba(165, 243, 252, 0.3);
+    }
+    .active\:bg-red-200:active {
+      background-color: #fecaca;
+    }
+    .active\:text-red-900:active {
+      color: #7f1d1d;
+    }
+    .active\:shadow-red-200\/30:active {
+      box-shadow: 0 4px 6px -1px rgba(254, 202, 202, 0.3), 0 2px 4px -1px rgba(254, 202, 202, 0.3);
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .profile-pane, .chat-pane, .journals-pane, .relax-pane, .emergency-pane, .mood-pane, .games-pane {
+      display: none;
+    }
+    .profile-pane.active, .chat-pane.active, .journals-pane.active, .relax-pane.active, .emergency-pane.active, .mood-pane.active, .games-pane.active {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .sidebar-btn.active {
+      background: var(--btn-active);
+      color: white;
+      box-shadow: 0 4px 6px -1px var(--shadow-color);
+    }
+    .sidebar-btn {
+      background: var(--btn-primary);
+      color: white;
+      box-shadow: 0 4px 6px -1px var(--shadow-color);
+      transition: all 0.3s ease;
+    }
+    .sidebar-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 8px -1px var(--shadow-color);
+    }
+    .sidebar-btn.logout {
+      background: linear-gradient(to bottom right, #fecaca, #fef2f2);
+      color: #7f1d1d;
+      box-shadow: 0 4px 6px -1px rgba(254, 202, 202, 0.3), 0 2px 4px -1px rgba(254, 202, 202, 0.3);
+    }
+
+    /* Highlight bar for navigation hover */
+    .sidebar-btn::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: rgba(255, 255, 255, 0.5);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+    }
+    .sidebar-btn:hover::before {
+      transform: scaleY(1);
+    }
+    .journal-item {
+      background: linear-gradient(to bottom right, #faf5ff, #eff6ff);
+      color: #1f2937;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .journal-item:hover {
+      transform: translateY(-0.125rem);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="flex h-screen font-['Poppins']">
+    <!-- Sidebar -->
+    <div class="w-64 sidebar-bg text-white flex flex-col p-5 shadow-lg">
+      <div class="text-center mb-4 text-base leading-relaxed" id="greeting">
+        Welcome 👋
+      </div>
+      <button class="sidebar-btn relax flex items-center gap-2 p-3 my-2 rounded-lg text-left transition-all duration-300 hover:translate-x-1 relative overflow-hidden" data-pane="relax">
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full transition-transform duration-500 hover:translate-x-full"></div>
+        <i class="fas fa-spa"></i>
+        Relax
+      </button>
+
+      <button class="sidebar-btn flex items-center gap-2 p-3 my-2 rounded-lg text-left transition-all duration-300 hover:translate-x-1 relative overflow-hidden active" data-pane="profile">
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full transition-transform duration-500 hover:translate-x-full"></div>
+        <i class="fas fa-tachometer-alt"></i>
+        Dashboard
+      </button>
+      <button class="sidebar-btn emergency flex items-center gap-2 p-3 my-2 rounded-lg text-left transition-all duration-300 hover:translate-x-1 relative overflow-hidden" onclick="showEmergency()">
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full transition-transform duration-500 hover:translate-x-full"></div>
+        🚨 Need Help?
+      </button>
+
+
+      <button class="sidebar-btn chat flex items-center gap-2 p-3 my-2 rounded-lg text-left transition-all duration-300 hover:translate-x-1 relative overflow-hidden" data-pane="chat">
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full transition-transform duration-500 hover:translate-x-full"></div>
+        <i class="fas fa-comments"></i>
+        Chat with C.A.L.M
+      </button>
+
+      <button class="sidebar-btn journals flex items-center gap-2 p-3 my-2 rounded-lg text-left transition-all duration-300 hover:translate-x-1 relative overflow-hidden" data-pane="journals">
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full transition-transform duration-500 hover:translate-x-full"></div>
+        <i class="fas fa-book"></i>
+        Mental Health Journals
+      </button>
+
+      <button class="sidebar-btn mood flex items-center gap-2 p-3 my-2 rounded-lg text-left transition-all duration-300 hover:translate-x-1 relative overflow-hidden" data-pane="mood">
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full transition-transform duration-500 hover:translate-x-full"></div>
+        <i class="fas fa-smile"></i>
+        Mood Tracker
+      </button>
+
+      <button class="sidebar-btn games flex items-center gap-2 p-3 my-2 rounded-lg text-left transition-all duration-300 hover:translate-x-1 relative overflow-hidden" data-pane="games">
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full transition-transform duration-500 hover:translate-x-full"></div>
+        <i class="fas fa-gamepad"></i>
+        AI Mental Health Games
+      </button>
+
+
+
+
+
+      <!-- Dark Mode Toggle -->
+      <button id="theme-toggle" class="sidebar-btn flex items-center gap-2 p-3 my-2 rounded-lg text-left transition-all duration-300 hover:translate-x-1 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full transition-transform duration-500 hover:translate-x-full"></div>
+        <i class="fas fa-moon" id="theme-icon"></i>
+        <span id="theme-text">Dark Mode</span>
+      </button>
+
+      <!-- Background Music Toggle -->
+      <button class="sidebar-btn flex items-center gap-2 p-3 my-2 rounded-lg text-left transition-all duration-300 hover:translate-x-1 relative overflow-hidden" onclick="toggleBgAudio()">
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full transition-transform duration-500 hover:translate-x-full"></div>
+        <i class="fas fa-music"></i>
+        Background Music
+      </button>
+
+      <button class="sidebar-btn logout flex items-center gap-2 p-3 my-2 rounded-lg text-left transition-all duration-300 hover:translate-x-1 relative overflow-hidden mt-auto" onclick="logout()">
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full transition-transform duration-500 hover:translate-x-full"></div>
+        <i class="fas fa-sign-out-alt"></i>
+        Logout
+      </button>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col p-5 box-border">
+      <!-- Profile Pane -->
+      <div class="profile-pane active animate-fadeIn">
+        <div class="flex justify-between items-center">
+          <h2 class="text-2xl font-semibold text-foreground">Your Profile</h2>
+          <div class="text-sm text-muted-foreground" id="member-since"></div>
+        </div>
+
+        <div class="flex gap-5 mt-3">
+          <div class="w-36 h-36 rounded-full bg-gradient-to-br from-purple-200 to-green-200 flex items-center justify-center overflow-hidden border-4 border-white/80 shadow-lg transition-transform duration-300 hover:scale-105" id="profile-pic-container">
+            <span class="text-muted-foreground">No Image</span>
+          </div>
+
+          <div class="flex-1">
+            <label class="font-medium text-foreground">Username</label>
+            <div class="p-3 bg-muted rounded-md" id="username-display"></div>
+
+            <label class="font-medium text-foreground mt-2 block">Email</label>
+            <input type="email" id="email-input" placeholder="your.email@example.com" class="w-full p-2.5 mt-1 rounded-md border border-border focus:outline-none focus:ring-2 focus:ring-primary focus:bg-blue-50 transition-all" />
+
+            <label class="font-medium text-foreground mt-2 block">Phone</label>
+            <input type="text" id="phone-input" placeholder="+91 98765 43210" class="w-full p-2.5 mt-1 rounded-md border border-border focus:outline-none focus:ring-2 focus:ring-primary focus:bg-blue-50 transition-all" />
+
+            <div class="mt-3">
+              <label class="font-medium text-foreground block">Profile Picture</label>
+              <input id="profile-pic-input" type="file" accept="image/*" class="mt-1" onchange="handleProfilePicChange(event)" title="Upload your profile picture" placeholder="Choose profile image" >
+              <div class="text-xs text-muted-foreground mt-1">Tip: choose a square image for best fit.</div>
+            </div>
+
+            <div class="flex gap-3 items-center mt-4">
+              <button onclick="saveProfile()" class="px-6 py-2.5 rounded-lg bg-gradient-to-br from-green-400 to-green-300 text-white shadow-md shadow-green-400/30 transition-transform hover:scale-105">
+                Save Profile
+              </button>
+
+              <div class="text-sm text-muted-foreground">
+                <div>Logins: <span class="font-medium" id="login-count"></span></div>
+                <div>Last login: <span class="font-medium" id="last-login"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Emergency Pane -->
+      <div id="emergencySection" class="emergency-pane animate-fadeIn">
+        <h2>🚨 Emergency Support</h2>
+        <p> If you are feeling distressed or need urgent support, please reach out to these helplines:</p>
+          <ul style="list-style:none; padding:0; font-size:16px;">
+    <li>🇮🇳 India – <strong>KIRAN Helpline:</strong> <a href="tel:9152987821">9152987821</a></li>
+    <li>🇺🇸 USA – <strong>Suicide & Crisis Lifeline:</strong> <a href="tel:988">988</a></li>
+    <li>🇬🇧 UK – <strong>Samaritans:</strong> <a href="tel:116123">116 123</a></li>
+    <li>🌍 International – <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer">Find a Helpline</a></li>
+  </ul>
+         <p style="margin-top:15px; color:#e74c3c; font-weight:bold;">
+    Remember: You are not alone. Help is just a call away. ❤️
+  </p>
+      </div>
+      <!-- Relax Pane -->
+      <div class="relax-pane animate-fadeIn">
+        <div id="relaxSection">
+          <h2 class="text-2xl font-semibold text-foreground mb-4">🧘 Mindfulness Breathing Exercise</h2>
+          <p class="mb-4">Follow the circle and breathe deeply...</p>
+          <div id="breathingCircle"></div>
+          <p id="breathingText">Breathe In...</p>
+          <audio id="relaxAudio" loop>
+            <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3e47c0b7e0.mp3" type="audio/mp3">
+            Your browser does not support audio.
+          </audio>
+          <br><br>
+          <button onclick="toggleRelaxAudio()" class="px-6 py-2.5 rounded-lg bg-gradient-to-br from-cyan-400 to-cyan-300 text-white shadow-md shadow-cyan-400/30 transition-transform hover:scale-105">
+            🎵 Toggle Music
+          </button>
+        </div>
+      </div>
+
+      <!-- Mood Tracker Pane -->
+      <div class="mood-pane animate-fadeIn">
+        <h2 class="text-2xl font-semibold text-foreground mb-4">😊 Mood Tracker</h2>
+        <p>Select your mood for today:</p>
+        <div class="flex gap-2 justify-center mb-4" style="margin: 10px 0;">
+          <button onclick="saveMood('😊')" class="px-4 py-2 rounded-lg bg-gradient-to-br from-green-400 to-green-300 text-white shadow-md shadow-green-400/30 transition-transform hover:scale-105 active:bg-green-200 active:text-green-900 active:shadow-green-200/30">😊 Happy</button>
+          <button onclick="saveMood('😐')" class="px-4 py-2 rounded-lg bg-gradient-to-br from-cyan-400 to-cyan-300 text-white shadow-md shadow-cyan-400/30 transition-transform hover:scale-105 active:bg-cyan-200 active:text-cyan-900 active:shadow-cyan-200/30">😐 Neutral</button>
+          <button onclick="saveMood('😔')" class="px-4 py-2 rounded-lg bg-gradient-to-br from-purple-400 to-purple-300 text-white shadow-md shadow-purple-400/30 transition-transform hover:scale-105 active:bg-purple-200 active:text-purple-900 active:shadow-purple-200/30">😔 Sad</button>
+          <button onclick="saveMood('😡')" class="px-4 py-2 rounded-lg bg-gradient-to-br from-red-400 to-red-300 text-white shadow-md shadow-red-400/30 transition-transform hover:scale-105 active:bg-red-200 active:text-red-900 active:shadow-red-200/30">😡 Angry</button>
+          <button onclick="saveMood('😴')" class="px-4 py-2 rounded-lg bg-gradient-to-br from-slate-400 to-slate-300 text-white shadow-md shadow-slate-400/30 transition-transform hover:scale-105 active:bg-slate-200 active:text-slate-900 active:shadow-slate-200/30">😴 Tired</button>
+        </div>
+        <div class="flex justify-center">
+          <canvas id="moodChart" width="400" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- Games Pane -->
+      <div class="games-pane animate-fadeIn" id="gamesSection">
+        <h2 class="text-2xl font-semibold text-foreground mb-4">🎮 AI Mental Health Games</h2>
+
+        <!-- Daily Challenge -->
+        <div id="dailyChallenge" class="mb-4 p-4 rounded-lg bg-muted">
+          <h3 class="text-xl font-semibold mb-2">📅 Today’s Challenge</h3>
+          <p id="challengeText" class="mb-2"></p>
+          <button onclick="completeChallenge()" class="px-4 py-2 rounded-lg bg-gradient-to-br from-green-400 to-green-300 text-white shadow-md shadow-green-400/30 transition-transform hover:scale-105">✅ Mark as Done</button>
+          <p class="mt-2"><strong>Points:</strong> <span id="points">0</span> | <strong>Streak:</strong> <span id="streak">0</span> days</p>
+          <div id="badgeArea" class="mt-2"></div>
+        </div>
+
+        <!-- Breathing Game -->
+        <div class="mb-4 p-4 rounded-lg bg-muted">
+          <h3 class="text-xl font-semibold mb-2">🧘 Breathing Sync Game</h3>
+          <p class="mb-2">Click the button in sync with “Breathe In / Out” text!</p>
+          <div id="breathingGameText" class="text-2xl font-bold mb-2 text-center">Breathe In...</div>
+          <button onclick="breathingClick()" class="px-6 py-2 rounded-lg bg-gradient-to-br from-cyan-400 to-cyan-300 text-white shadow-md shadow-cyan-400/30 transition-transform hover:scale-105">Tap</button>
+          <p class="mt-2">Your Score: <span id="breathingScore">0</span></p>
+        </div>
+
+        <!-- Positivity Challenge -->
+        <div class="p-4 rounded-lg bg-muted">
+          <h3 class="text-xl font-semibold mb-2">🌸 Positivity Challenge</h3>
+          <p class="mb-2" id="positiveWord">Word: Hope</p>
+          <textarea id="positiveInput" rows="2" class="w-full p-2 border border-border rounded-md mb-2" placeholder="Write a positive sentence using the word..."></textarea>
+          <button onclick="checkPositivity()" class="px-4 py-2 rounded-lg bg-gradient-to-br from-purple-400 to-purple-300 text-white shadow-md shadow-purple-400/30 transition-transform hover:scale-105">Submit</button>
+          <p id="positivityResult" class="mt-2"></p>
+        </div>
+      </div>
+
+
+
+
+
+      <!-- Chat Pane -->
+      <div class="chat-pane animate-fadeIn">
+        <h2 class="text-2xl font-semibold text-foreground mb-4">Chat with C.A.L.M</h2>
+        <iframe src="https://cdn.botpress.cloud/webchat/v3.2/shareable.html?configUrl=https://files.bpcontent.cloud/2025/09/11/16/20250911165955-RFYWE8Z8.json" class="flex-1 w-full border-none rounded-lg" title="Chat with C.A.L.M"></iframe>
+      </div>
+
+      <!-- Journals Pane -->
+      <div class="journals-pane animate-fadeIn">
+        <h2 class="text-2xl font-semibold text-foreground mb-4">📘 Mental Health Journals</h2>
+
+        <div class="flex gap-5 h-[calc(100%-44px)]">
+          <div class="w-80">
+            <div class="mb-3">
+              <strong class="text-foreground">Add a journal (link or PDF file):</strong>
+            </div>
+
+            <input id="journal-url-input" placeholder="Paste URL to article/PDF (https://...)" class="w-full p-2 mb-2 rounded-md border border-border" />
+
+            <input id="journal-file-input" type="file" accept=".pdf" class="mb-2" onchange="addJournalFromFile(event)" />
+
+            <div class="flex gap-2">
+              <button onclick="addJournalByUrl()" class="px-4 py-2 rounded-lg bg-gradient-to-br from-green-400 to-green-300 text-white shadow-md shadow-green-400/30">
+                Add Link
+              </button>
+              <button onclick="document.getElementById('journal-file-input').click()" class="px-4 py-2 rounded-lg bg-gradient-to-br from-green-400 to-green-300 text-white shadow-md shadow-green-400/30">
+                Upload PDF
+              </button>
+            </div>
+
+            <div class="mt-4">
+              <strong class="text-foreground">Available journals</strong>
+              <div class="mt-2 max-h-96 overflow-auto pr-2" id="journals-list">
+                <div class="text-sm text-muted-foreground">No journals added yet.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-1 flex flex-col">
+            <div class="flex-1 rounded-lg overflow-hidden bg-background border border-border">
+              <div class="h-full flex items-center justify-center text-muted-foreground">
+                Select a journal to view
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <audio id="bgAudio" loop preload="none">
+    <source src="calming-down-and-relaxation-during-a-storm-in-your-forest-hut-111656.mp3" type="audio/mp3">
+    Your browser does not support audio.
+  </audio>
+  <script>
+    let activePane = 'profile';
+    let sessionUser = '';
+    let user = {};
+    let journals = [];
+    let breathingInterval;
+    let gameData = {};
+    let challenges = ["Write down 3 things you're grateful for", "Take a 5-minute walk", "Call a friend", "Meditate for 10 minutes", "Drink a glass of water", "Smile at yourself in the mirror", "Listen to your favorite song", "Do a random act of kindness"];
+    let breathingGameInterval;
+    let breathingCycle = ["Breathe In...", "Hold...", "Breathe Out...", "Hold..."];
+    let cycleIndex = 0;
+    let breathingScore = 0;
+
+    let breathingTexts = ["Breathe In...", "Hold...", "Breathe Out...", "Hold..."];
+    let textIndex = 0;
+    function cycleBreathingText() {
+      // Clear existing interval to avoid multiples
+      if (breathingInterval) {
+        clearInterval(breathingInterval);
+      }
+      const textEl = document.getElementById("breathingText");
+      if (!textEl) return;
+      breathingInterval = setInterval(() => {
+        textEl.textContent = breathingTexts[textIndex];
+        textIndex = (textIndex + 1) % breathingTexts.length;
+      }, 4000);
+    }
+    function showEmergency() {
+  document.querySelectorAll('.profile-pane, .chat-pane, .journals-pane, .relax-pane, .emergency-pane, .mood-pane, .games-pane').forEach(el => el.classList.remove('active'));
+  document.querySelector('.emergency-pane').classList.add('active');
+  document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
+}
+
+
+    // Toggle music
+    function toggleRelaxAudio() {
+      const audio = document.getElementById("relaxAudio");
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    }
+    // Mood Tracker Data
+let moods = JSON.parse(localStorage.getItem("moods")) || [];
+
+
+// Save Mood
+function saveMood(mood) {
+  const today = new Date().toLocaleDateString();
+  moods.push({ date: today, mood: mood });
+  localStorage.setItem("moods", JSON.stringify(moods));
+  renderMoodChart();
+  alert("Mood saved: " + mood);
+}
+
+    // Render Chart
+    function renderMoodChart() {
+      const ctx = document.getElementById("moodChart").getContext("2d");
+
+      // Aggregate mood counts
+      const moodCounts = { "😊": 0, "😐": 0, "😔": 0, "😡": 0, "😴": 0 };
+      moods.forEach(entry => {
+        if (moodCounts[entry.mood] !== undefined) {
+          moodCounts[entry.mood]++;
+        }
+      });
+
+      // Destroy old chart if exists
+      if (window.moodChartInstance) {
+        window.moodChartInstance.destroy();
+      }
+
+      // Create new chart
+      window.moodChartInstance = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: Object.keys(moodCounts),
+          datasets: [{
+            label: "Mood Frequency",
+            data: Object.values(moodCounts),
+            backgroundColor: ["#2ecc71", "#3498db", "#9b59b6", "#e74c3c", "#f1c40f"]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    }
+
+    // Dark Mode Toggle
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      const html = document.documentElement;
+      html.setAttribute('data-theme', savedTheme);
+      const icon = document.getElementById('theme-icon');
+      const themeText = document.getElementById('theme-text');
+      if (savedTheme === 'dark') {
+        icon.className = 'fas fa-sun';
+        themeText.textContent = 'Light Mode';
+      } else {
+        icon.className = 'fas fa-moon';
+        themeText.textContent = 'Dark Mode';
+      }
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      const icon = document.getElementById('theme-icon');
+      const themeText = document.getElementById('theme-text');
+      if (newTheme === 'dark') {
+        icon.className = 'fas fa-sun';
+        themeText.textContent = 'Light Mode';
+      } else {
+        icon.className = 'fas fa-moon';
+        themeText.textContent = 'Dark Mode';
+      }
+    }
+
+    function setGreeting() {
+      const hours = new Date().getHours();
+      let timeGreeting = "How's your day?";
+      if (hours < 12) timeGreeting = 'Good morning ☀️';
+      else if (hours < 18) timeGreeting = 'Good afternoon 🌞';
+      else timeGreeting = 'Good evening 🌙';
+      document.getElementById('greeting').textContent = `Welcome ${sessionUser} 👋 — ${timeGreeting}`;
+    }
+
+    function formatRelativeTime(timestamp) {
+      if (!timestamp) return 'Never';
+      const now = Date.now();
+      const diff = Math.max(0, now - timestamp);
+      const mins = Math.floor(diff / 60000);
+      if (mins < 1) return 'Just now';
+      if (mins < 60) return `${mins} minute${mins > 1 ? 's' : ''} ago`;
+      const hours = Math.floor(mins / 60);
+      if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+      const days = Math.floor(hours / 24);
+      if (days < 30) return `${days} day${days > 1 ? 's' : ''} ago`;
+      const months = Math.floor(days / 30);
+      return `${months} month${months > 1 ? 's' : ''} ago`;
+    }
+
+    function loadUserData() {
+      sessionUser = localStorage.getItem('loggedInUser');
+      if (!sessionUser) {
+        window.location.href = 'index.html';
+        return;
+      }
+      const stored = JSON.parse(localStorage.getItem(sessionUser));
+      if (!stored) {
+        window.location.href = 'index.html';
+        return;
+      }
+      user = stored;
+      document.getElementById('username-display').textContent = sessionUser;
+      document.getElementById('email-input').value = user.email || '';
+      document.getElementById('phone-input').value = user.phone || '';
+      document.getElementById('login-count').textContent = user.loginCount || 0;
+      document.getElementById('last-login').textContent = formatRelativeTime(user.lastLogin);
+      if (user.signupDate) {
+        document.getElementById('member-since').textContent = `Member since ${new Date(user.signupDate).toLocaleDateString()}`;
+      }
+      if (user.profilePic) {
+        const img = document.createElement('img');
+        img.src = user.profilePic;
+        img.className = 'w-full h-full object-cover';
+        document.getElementById('profile-pic-container').innerHTML = '';
+        document.getElementById('profile-pic-container').appendChild(img);
+      }
+      setGreeting();
+    }
+
+    function loadJournals() {
+      const storedJournals = JSON.parse(localStorage.getItem(`${sessionUser}_journals`)) || [];
+      journals = storedJournals;
+      renderJournals();
+    }
+
+    function renderJournals() {
+      const list = document.getElementById('journals-list');
+      if (journals.length === 0) {
+        list.innerHTML = '<div class="text-sm text-muted-foreground">No journals added yet.</div>';
+        return;
+      }
+      list.innerHTML = '<ul class="list-none p-0 m-0">';
+      journals.forEach((journal, index) => {
+        const li = document.createElement('li');
+        li.className = 'my-2 flex items-center';
+        const a = document.createElement('a');
+        a.href = '#';
+        a.className = 'flex-1 p-2.5 rounded-md journal-item';
+        a.textContent = journal.title || `Journal ${index + 1}`;
+        a.onclick = (e) => {
+          e.preventDefault();
+          openJournal(journal.url);
+        };
+        li.appendChild(a);
+        const btn = document.createElement('button');
+        btn.className = 'ml-2 px-2.5 py-1 text-xs border-none rounded bg-destructive text-white transition-colors hover:bg-destructive/90';
+        btn.textContent = 'Delete';
+        btn.onclick = () => removeJournal(index);
+        li.appendChild(btn);
+        list.querySelector('ul').appendChild(li);
+      });
+      list.innerHTML += '</ul>';
+    }
+
+    function handleProfilePicChange(event) {
+      const file = event.target.files[0];
+      if (!file || !file.type.startsWith('image/')) {
+        alert('Please select an image file.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        user.profilePic = reader.result;
+        const img = document.createElement('img');
+        img.src = user.profilePic;
+        img.className = 'w-full h-full object-cover';
+        document.getElementById('profile-pic-container').innerHTML = '';
+        document.getElementById('profile-pic-container').appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function saveProfile() {
+      user.email = document.getElementById('email-input').value;
+      user.phone = document.getElementById('phone-input').value;
+      localStorage.setItem(sessionUser, JSON.stringify(user));
+      alert('Profile saved.');
+    }
+
+    function addJournalByUrl() {
+      const url = document.getElementById('journal-url-input').value.trim();
+      if (!url) {
+        alert('Paste a URL first.');
+        return;
+      }
+      const newJournal = { url, title: url };
+      journals.push(newJournal);
+      localStorage.setItem(`${sessionUser}_journals`, JSON.stringify(journals));
+      document.getElementById('journal-url-input').value = '';
+      renderJournals();
+      setActivePane('journals');
+    }
+
+    function addJournalFromFile(event) {
+      const file = event.target.files[0];
+      if (!file || file.type !== 'application/pdf') {
+        alert('Please upload a PDF.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const newJournal = { url: reader.result, title: file.name };
+        journals.push(newJournal);
+        localStorage.setItem(`${sessionUser}_journals`, JSON.stringify(journals));
+        renderJournals();
+        setActivePane('journals');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeJournal(index) {
+      if (!confirm('Remove this journal?')) return;
+      journals.splice(index, 1);
+      localStorage.setItem(`${sessionUser}_journals`, JSON.stringify(journals));
+      renderJournals();
+    }
+
+    function openJournal(url) {
+      window.open(url, '_blank');
+    }
+
+    function logout() {
+      localStorage.removeItem('loggedInUser');
+      window.location.href = 'index.html';
+    }
+
+    function setActivePane(pane) {
+      activePane = pane;
+      document.querySelectorAll('.profile-pane, .chat-pane, .journals-pane, .relax-pane, .emergency-pane, .mood-pane, .games-pane').forEach(el => el.classList.remove('active'));
+      document.querySelector(`.${pane}-pane`).classList.add('active');
+      document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`[data-pane="${pane}"]`).classList.add('active');
+      if (pane === 'relax') {
+        // Initialize breathing animation
+        cycleBreathingText();
+        // Start the breathing circle animation (already in CSS)
+      } else if (pane === 'mood') {
+        renderMoodChart();
+      } else if (pane === 'games') {
+        initGames();
+      }
+    }
+
+    document.querySelectorAll('.sidebar-btn[data-pane]').forEach(btn => {
+      btn.addEventListener('click', () => setActivePane(btn.dataset.pane));
+    });
+
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+
+    loadUserData();
+    loadJournals();
+    initTheme();
+
+    // Toggle background music
+    function toggleBgAudio() {
+      const audio = document.getElementById("bgAudio");
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    }
+
+    // Games Functions
+    function initGames() {
+      loadGameData();
+      setDailyChallenge();
+      startBreathingGame();
+      setPositiveWord();
+    }
+
+    function loadGameData() {
+      gameData = JSON.parse(localStorage.getItem(`${sessionUser}_games`)) || {
+        points: 0,
+        streak: 0,
+        lastChallengeDate: null,
+        badges: []
+      };
+      document.getElementById('points').textContent = gameData.points;
+      document.getElementById('streak').textContent = gameData.streak;
+      renderBadges();
+    }
+
+    function saveGameData() {
+      localStorage.setItem(`${sessionUser}_games`, JSON.stringify(gameData));
+    }
+
+    function setDailyChallenge() {
+      const today = new Date().toLocaleDateString();
+      if (gameData.lastChallengeDate !== today) {
+        const challenge = challenges[Math.floor(Math.random() * challenges.length)];
+        document.getElementById('challengeText').textContent = challenge;
+        gameData.currentChallenge = challenge;
+      } else {
+        if (!gameData.currentChallenge) {
+          gameData.currentChallenge = challenges[0];
+        }
+        document.getElementById('challengeText').textContent = gameData.currentChallenge;
+      }
+      saveGameData();
+    }
+
+    function completeChallenge() {
+      const today = new Date().toLocaleDateString();
+      if (gameData.lastChallengeDate !== today) {
+        gameData.points += 10;
+        gameData.streak += 1;
+        gameData.lastChallengeDate = today;
+        if (gameData.streak % 7 === 0) {
+          gameData.badges.push(`Week ${gameData.streak / 7} Streak!`);
+        }
+        saveGameData();
+        document.getElementById('points').textContent = gameData.points;
+        document.getElementById('streak').textContent = gameData.streak;
+        renderBadges();
+        alert('Challenge completed! +10 points');
+      } else {
+        alert('Challenge already completed today!');
+      }
+    }
+
+    function renderBadges() {
+      const badgeArea = document.getElementById('badgeArea');
+      badgeArea.innerHTML = '';
+      gameData.badges.forEach(badge => {
+        const badgeEl = document.createElement('span');
+        badgeEl.className = 'inline-block bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-xs font-semibold mr-2';
+        badgeEl.textContent = badge;
+        badgeArea.appendChild(badgeEl);
+      });
+    }
+
+    function startBreathingGame() {
+      if (breathingGameInterval) clearInterval(breathingGameInterval);
+      cycleIndex = 0;
+      breathingScore = 0;
+      document.getElementById('breathingScore').textContent = breathingScore;
+      breathingGameInterval = setInterval(() => {
+        document.getElementById('breathingGameText').textContent = breathingCycle[cycleIndex];
+        cycleIndex = (cycleIndex + 1) % breathingCycle.length;
+      }, 2000);
+    }
+
+    function breathingClick() {
+      const currentText = document.getElementById('breathingGameText').textContent;
+      if (currentText === 'Breathe In...' || currentText === 'Breathe Out...') {
+        breathingScore += 1;
+        document.getElementById('breathingScore').textContent = breathingScore;
+      }
+    }
+
+    function setPositiveWord() {
+      const words = ['Hope', 'Joy', 'Peace', 'Love', 'Strength', 'Gratitude', 'Courage', 'Compassion'];
+      const word = words[Math.floor(Math.random() * words.length)];
+      document.getElementById('positiveWord').textContent = `Word: ${word}`;
+      gameData.currentWord = word;
+    }
+
+    function checkPositivity() {
+      const input = document.getElementById('positiveInput').value.trim();
+      const word = gameData.currentWord;
+      const resultEl = document.getElementById('positivityResult');
+      if (input.toLowerCase().includes(word.toLowerCase()) && input.length > word.length + 5) {
+        resultEl.textContent = 'Great positive sentence! +5 points';
+        resultEl.className = 'mt-2 text-green-600';
+        gameData.points += 5;
+        document.getElementById('points').textContent = gameData.points;
+        saveGameData();
+        setPositiveWord();
+        document.getElementById('positiveInput').value = '';
+      } else {
+        resultEl.textContent = 'Try to include the word and make it more positive!';
+        resultEl.className = 'mt-2 text-red-600';
+      }
+    }
+  </script>
+
+</body>
+</html>
